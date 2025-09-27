@@ -168,39 +168,12 @@ void setup() {
 }
 
 void loop() {
-  ecran.clearDisplay(); 
-  ecran.drawBitmap(0, 1, eye1b, 85, 48, WHITE);
-  ecran.display();
-  delay(10);
-  
-  ecran.clearDisplay(); 
-  ecran.drawBitmap(0, 1, eye2b, 83, 47, WHITE);
-  ecran.display();
-  delay(10);
-  
-  ecran.clearDisplay(); 
-  ecran.drawBitmap(0, 1, eye3b, 81, 47, WHITE);
-  ecran.display();
-  delay(10);
-  
-  ecran.clearDisplay(); 
-  ecran.drawBitmap(0, 1, eye4b, 87, 47, WHITE);
-  ecran.display();
-  delay(10);
-
-  ecran.clearDisplay(); 
-  ecran.drawBitmap(0, 1, eye3b, 81, 47, WHITE);
-  ecran.display();
-  delay(10);
-
-  ecran.clearDisplay(); 
-  ecran.drawBitmap(0, 1, eye2b, 87, 47, WHITE);
-  ecran.display();
-  delay(10);
-
-  ecran.clearDisplay(); 
-  ecran.drawBitmap(0, 1, eye1b, 85, 48, WHITE);
-  ecran.display();
-  delay(1000);
+  ecran.clearDisplay(); ecran.drawBitmap(21, 8, eye1b, 85, 48, WHITE); ecran.display(); delay(10);
+  ecran.clearDisplay(); ecran.drawBitmap(22, 8, eye2b, 83, 47, WHITE); ecran.display(); delay(10);
+  ecran.clearDisplay(); ecran.drawBitmap(23, 8, eye3b, 81, 47, WHITE); ecran.display(); delay(10);
+  ecran.clearDisplay(); ecran.drawBitmap(20, 8, eye4b, 87, 47, WHITE); ecran.display(); delay(10);
+  ecran.clearDisplay(); ecran.drawBitmap(23, 8, eye3b, 81, 47, WHITE); ecran.display(); delay(10);
+  ecran.clearDisplay(); ecran.drawBitmap(22, 8, eye2b, 83, 47, WHITE); ecran.display(); delay(10);
+  ecran.clearDisplay(); ecran.drawBitmap(21, 8, eye1b, 85, 48, WHITE); ecran.display(); delay(1000);
 
 }
