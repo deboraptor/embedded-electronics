@@ -5,7 +5,8 @@
 // test d'un écran OLED 128x64 I2C
 // Objectif : synchroniser l'affichage des yeux sur 2 écrans OLED 
 
-Adafruit_SSD1306 ecran(128, 64, &Wire, -1);  
+Adafruit_SSD1306 ecrana(128, 64, &Wire, -1);  
+Adafruit_SSD1306 ecranb(128, 64, &Wire, -1);  
 
 const unsigned char eye1b [] PROGMEM = {
   // 'oeil1-b, 85x48px
@@ -157,19 +158,27 @@ const unsigned char eye4b [] PROGMEM = {
 
 
 void setup() {
-  ecran.begin(SSD1306_SWITCHCAPVCC, 0x3C);
-  ecran.setTextSize(1);               
-  ecran.setTextColor(SSD1306_WHITE);      
-  ecran.setCursor(15, 9);     
+  ecrana.begin(SSD1306_SWITCHCAPVCC, 0x3D);
+  ecrana.setTextSize(1);               
+  ecrana.setTextColor(SSD1306_WHITE);      
+  ecrana.setCursor(15, 9);   
+  ecrana.println(F("Hello, world!"));
+  ecrana.display();
+
+  ecranb.begin(SSD1306_SWITCHCAPVCC, 0x3C);   
+  ecranb.setTextSize(1);               
+  ecranb.setTextColor(SSD1306_WHITE);      
+  ecranb.setCursor(15, 9);
+  ecranb.println(F("Hello, world!"));
+  ecranb.display();     
 }
 
 void loop() {
-  ecran.clearDisplay(); ecran.drawBitmap(21, 8, eye1b, 85, 48, WHITE); ecran.display(); delay(10);
-  ecran.clearDisplay(); ecran.drawBitmap(22, 8, eye2b, 83, 47, WHITE); ecran.display(); delay(10);
-  ecran.clearDisplay(); ecran.drawBitmap(23, 8, eye3b, 81, 47, WHITE); ecran.display(); delay(10);
-  ecran.clearDisplay(); ecran.drawBitmap(20, 8, eye4b, 87, 47, WHITE); ecran.display(); delay(10);
-  ecran.clearDisplay(); ecran.drawBitmap(23, 8, eye3b, 81, 47, WHITE); ecran.display(); delay(10);
-  ecran.clearDisplay(); ecran.drawBitmap(22, 8, eye2b, 83, 47, WHITE); ecran.display(); delay(10);
-  ecran.clearDisplay(); ecran.drawBitmap(21, 8, eye1b, 85, 48, WHITE); ecran.display(); delay(1000);
-
+  ecranb.clearDisplay(); ecranb.drawBitmap(21, 8, eye1b, 85, 48, WHITE); ecranb.display(); delay(10);
+  ecranb.clearDisplay(); ecranb.drawBitmap(22, 8, eye2b, 83, 47, WHITE); ecranb.display(); delay(10);
+  ecranb.clearDisplay(); ecranb.drawBitmap(23, 8, eye3b, 81, 47, WHITE); ecranb.display(); delay(10);
+  ecranb.clearDisplay(); ecranb.drawBitmap(20, 8, eye4b, 87, 47, WHITE); ecranb.display(); delay(10);
+  ecranb.clearDisplay(); ecranb.drawBitmap(23, 8, eye3b, 81, 47, WHITE); ecranb.display(); delay(10);
+  ecranb.clearDisplay(); ecranb.drawBitmap(22, 8, eye2b, 83, 47, WHITE); ecranb.display(); delay(10);
+  ecranb.clearDisplay(); ecranb.drawBitmap(21, 8, eye1b, 85, 48, WHITE); ecranb.display(); delay(1000);
 }
