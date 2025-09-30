@@ -1,12 +1,10 @@
+// génération des images en binaire : https://javl.github.io/image2cpp/?pseSrc=pgEcranOledArduino
 #include <Adafruit_GFX.h>
 #include <Adafruit_SSD1306.h>
 #include <Wire.h>
 
 // test d'un écran OLED 128x64 I2C
 // Objectif : synchroniser l'affichage des yeux sur 2 écrans OLED 
-
-Adafruit_SSD1306 ecrana(128, 64, &Wire, -1);  
-Adafruit_SSD1306 ecranb(128, 64, &Wire, -1);  
 
 const unsigned char eye1b [] PROGMEM = {
   // 'oeil1-b, 85x48px
@@ -156,29 +154,64 @@ const unsigned char eye4b [] PROGMEM = {
   0x00, 0x00, 0x00, 0x00, 0x00
 };
 
+Adafruit_SSD1306 ecrana(128, 64, &Wire, -1); 
+Adafruit_SSD1306 ecranb(128, 64, &Wire, -1); 
+
+// Animation
+const unsigned char* FRAMES[] = { eye1b, eye2b, eye3b, eye4b, eye3b, eye2b, eye1b };
+// les paramètres de chaque frame, indexés pareil
+const uint8_t  W[] = {85,83,81,87,81,83,85};   // largeur  de chaque frame
+const uint8_t  H[] = {48,47,47,47,47,47,48};   // hauteur  de chaque frame
+const int8_t   X[] = {21,22,23,20,23,22,21};   // position X de départ
+const int8_t   Y[] = { 8, 8, 8,  8, 8, 8,  8}; // position Y de départ
+const uint8_t N = sizeof(FRAMES)/sizeof(FRAMES[0]);
+
+const uint16_t FRAME_MS = 60; // durée d’affichage d’une frame
+const uint16_t HOLD_MS  = 1000; // pause en fin de cycle 
+
 
 void setup() {
-  ecrana.begin(SSD1306_SWITCHCAPVCC, 0x3D);
-  ecrana.setTextSize(1);               
-  ecrana.setTextColor(SSD1306_WHITE);      
-  ecrana.setCursor(15, 9);   
-  ecrana.println(F("Hello, world!"));
-  ecrana.display();
+  // pin 21/22 (réservé pour I2C) en 400 kHz
+  Wire.begin(21, 22, 400000);
 
-  ecranb.begin(SSD1306_SWITCHCAPVCC, 0x3C);   
-  ecranb.setTextSize(1);               
-  ecranb.setTextColor(SSD1306_WHITE);      
-  ecranb.setCursor(15, 9);
-  ecranb.println(F("Hello, world!"));
-  ecranb.display();     
+  bool okA = ecrana.begin(SSD1306_SWITCHCAPVCC, 0x3D);
+  bool okB = ecranb.begin(SSD1306_SWITCHCAPVCC, 0x3C);
+
+  // B = “normal”, A = miroir horizontal de B
+  ecrana.ssd1306_command(0xA0); // miroir X pour A
+
+  // apparement un peu plus de contraste
+  if (okA) ecrana.ssd1306_command(SSD1306_SETCONTRAST), ecrana.ssd1306_command(0x8F);
+  if (okB) ecranb.ssd1306_command(SSD1306_SETCONTRAST), ecranb.ssd1306_command(0x8F);
+
+  if (okA && okB) {
+    ecrana.clearDisplay(); ecranb.clearDisplay();
+    ecrana.setTextSize(1); ecranb.setTextSize(1);
+    ecrana.setTextColor(SSD1306_WHITE); ecranb.setTextColor(SSD1306_WHITE);
+    ecrana.setCursor(15, 9); ecrana.println(F("ESP32 OK"));
+    ecranb.setCursor(15, 9); ecranb.println(F("2x OLED"));
+    ecrana.display(); ecranb.display();
+    delay(600);
+  }
+}
+
+static inline void drawFrameBoth(uint8_t i) {
+  ecrana.clearDisplay();
+  ecranb.clearDisplay();
+
+  ecrana.drawBitmap(X[i], Y[i], FRAMES[i], W[i], H[i], SSD1306_WHITE);
+  ecranb.drawBitmap(X[i], Y[i], FRAMES[i], W[i], H[i], SSD1306_WHITE);
+
+  ecrana.display();
+  ecranb.display();
 }
 
 void loop() {
-  ecranb.clearDisplay(); ecranb.drawBitmap(21, 8, eye1b, 85, 48, WHITE); ecranb.display(); delay(10);
-  ecranb.clearDisplay(); ecranb.drawBitmap(22, 8, eye2b, 83, 47, WHITE); ecranb.display(); delay(10);
-  ecranb.clearDisplay(); ecranb.drawBitmap(23, 8, eye3b, 81, 47, WHITE); ecranb.display(); delay(10);
-  ecranb.clearDisplay(); ecranb.drawBitmap(20, 8, eye4b, 87, 47, WHITE); ecranb.display(); delay(10);
-  ecranb.clearDisplay(); ecranb.drawBitmap(23, 8, eye3b, 81, 47, WHITE); ecranb.display(); delay(10);
-  ecranb.clearDisplay(); ecranb.drawBitmap(22, 8, eye2b, 83, 47, WHITE); ecranb.display(); delay(10);
-  ecranb.clearDisplay(); ecranb.drawBitmap(21, 8, eye1b, 85, 48, WHITE); ecranb.display(); delay(1000);
+  for (uint8_t i = 0; i < N; i++) {
+    uint32_t t0 = millis();
+    drawFrameBoth(i);
+    uint32_t dt = millis() - t0;
+    if (dt < FRAME_MS) delay(FRAME_MS - dt);
+  }
+  delay(HOLD_MS);
 }
