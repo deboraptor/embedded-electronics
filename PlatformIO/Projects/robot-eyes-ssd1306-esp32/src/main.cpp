@@ -80,7 +80,7 @@ const unsigned char eye2b [] PROGMEM = {
   0x00, 0x00, 0x00, 0x00, 0x00, 
 };
 
-const unsigned char eye3b [] PROGMEM = {
+const unsigned char eye3b [] PROGMEM = { // PROGMEM  = stockage en mémoire flash (pour prendre moins de RAM)
   // 'oeil3-b, 81x47px
   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 
   0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 
@@ -158,7 +158,7 @@ Adafruit_SSD1306 ecrana(128, 64, &Wire, -1);
 Adafruit_SSD1306 ecranb(128, 64, &Wire, -1); 
 
 // Animation
-const unsigned char* FRAMES[] = { eye1b, eye2b, eye3b, eye4b, eye3b, eye2b, eye1b };
+const unsigned char* FRAMES[] = { eye1b, eye2b, eye3b, eye4b, eye3b, eye2b, eye1b }; // définir l'ordre des frames
 // les paramètres de chaque frame, indexés pareil
 const uint8_t  W[] = {85,83,81,87,81,83,85};   // largeur  de chaque frame
 const uint8_t  H[] = {48,47,47,47,47,47,48};   // hauteur  de chaque frame
@@ -174,19 +174,24 @@ void setup() {
   // pin 21/22 (réservé pour I2C) en 400 kHz
   Wire.begin(22, 21, 400000);
 
+  // initialisation des écrans, s'il sont détectés à la bonne adresse A=0x3D, B=0x3C
   bool okA = ecrana.begin(SSD1306_SWITCHCAPVCC, 0x3D);
   bool okB = ecranb.begin(SSD1306_SWITCHCAPVCC, 0x3C);
 
   // B = “normal”, A = miroir horizontal de B
-  ecrana.ssd1306_command(0xA0); // miroir X pour A
+  ecrana.ssd1306_command(0xA0); // miroir de l'écran B pour l'écran A, à changer quand nouveaux dessins
 
   // apparement un peu plus de contraste
+  // TODO : à tester si utile
   if (okA) ecrana.ssd1306_command(SSD1306_SETCONTRAST), ecrana.ssd1306_command(0x8F);
   if (okB) ecranb.ssd1306_command(SSD1306_SETCONTRAST), ecranb.ssd1306_command(0x8F);
-
 }
 
 static inline void drawFrameBoth(uint8_t i) {
+  // void = ne retourne rien
+  // inline = suggère au compilateur de copier-coller le code à chaque appel,
+  //          pour éviter le surcoût d'un appel de fonction (gain de temps)
+  // static = la fonction est visible uniquement dans ce fichier (évite les conflits de noms)
   ecrana.clearDisplay();
   ecranb.clearDisplay();
 
@@ -199,6 +204,7 @@ static inline void drawFrameBoth(uint8_t i) {
 
 void loop() {
   for (uint8_t i = 0; i < N; i++) {
+    // on utilise millis() pour avoir un timing plus précis, delay() bloque tout
     uint32_t t0 = millis();
     drawFrameBoth(i);
     uint32_t dt = millis() - t0;
