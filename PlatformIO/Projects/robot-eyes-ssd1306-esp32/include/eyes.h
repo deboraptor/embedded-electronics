@@ -1,4 +1,4 @@
-#pragma once
+#pragma once // n’inclus ce fichier qu’une seule fois pendant la compilation, même si on l’appelle plusieurs fois avec #include.
 #include <Arduino.h>
 #include <Adafruit_SSD1306.h>
 
