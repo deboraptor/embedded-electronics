@@ -172,7 +172,7 @@ const uint16_t HOLD_MS  = 1000; // pause en fin de cycle
 
 void setup() {
   // pin 21/22 (réservé pour I2C) en 400 kHz
-  Wire.begin(21, 22, 400000);
+  Wire.begin(22, 21, 400000);
 
   bool okA = ecrana.begin(SSD1306_SWITCHCAPVCC, 0x3D);
   bool okB = ecranb.begin(SSD1306_SWITCHCAPVCC, 0x3C);
@@ -184,15 +184,6 @@ void setup() {
   if (okA) ecrana.ssd1306_command(SSD1306_SETCONTRAST), ecrana.ssd1306_command(0x8F);
   if (okB) ecranb.ssd1306_command(SSD1306_SETCONTRAST), ecranb.ssd1306_command(0x8F);
 
-  if (okA && okB) {
-    ecrana.clearDisplay(); ecranb.clearDisplay();
-    ecrana.setTextSize(1); ecranb.setTextSize(1);
-    ecrana.setTextColor(SSD1306_WHITE); ecranb.setTextColor(SSD1306_WHITE);
-    ecrana.setCursor(15, 9); ecrana.println(F("ESP32 OK"));
-    ecranb.setCursor(15, 9); ecranb.println(F("2x OLED"));
-    ecrana.display(); ecranb.display();
-    delay(600);
-  }
 }
 
 static inline void drawFrameBoth(uint8_t i) {
