@@ -20,7 +20,7 @@
 * [Codingame](https://www.codingame.com/) – pour pratiquer avec des mini-jeux
 * [Replit.com](https://replit.com/) – pour coder sans installer quoi que ce soit
 
-## **Ressources Arduino + C/C++**
+### **Ressources Arduino + C/C++**
 * [Cours Arduino officiel (FR)](https://www.arduino.cc/education)
 * [OpenClassrooms – Programmer avec Arduino](https://openclassrooms.com/fr/courses/1462376-programmez-avec-arduino)
 * [Tuto Arduino France – Le guide du débutant](https://projetsdiy.fr/arduino-debuter-guide/)
