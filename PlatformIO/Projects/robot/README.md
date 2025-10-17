@@ -23,7 +23,12 @@
 - [ ] micros-mouvements des yeux ?
 
 ## robot wheels
+### Matériel
 * TMC2209 or TMC2208
 * Stepper Nema 17: 17HE08-1004S
 * bracelet silicone diam 5cm x 2
 * une batterie / pile / de quoi avoir du courant
+
+### Sources
+* https://youtu.be/09Mpkjcr0bo?si=AsDyuRoitBP0GgXo
+* https://youtu.be/bkqoKWP4Oy4?si=CPyFFZjHUmcJd_Ae
