@@ -1,4 +1,4 @@
-# robot-eyes-ssd1306-esp32
+## robot-eyes-ssd1306-esp32
 ### Matériel
 * 1× ESP32 DevKit (3,3 V)
 * 2× OLED SSD1306 128×64 I²C (désouder la résistance pour l'adresse 0x78)
@@ -21,3 +21,9 @@
 - [ ] faire les dessins moi-même
 - [ ] clignements "aléatoires"
 - [ ] micros-mouvements des yeux ?
+
+## robot wheels
+* TMC2209 or TMC2208
+* Stepper Nema 17: 17HE08-1004S
+* bracelet silicone diam 5cm x 2
+* une batterie / pile / de quoi avoir du courant
