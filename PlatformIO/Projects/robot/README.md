@@ -24,7 +24,7 @@
 
 ## robot wheels
 ### Matériel
-* TMC2209 or TMC2208
+* TMC2209
 * Stepper Nema 17: 17HE08-1004S
 * bracelet silicone diam 5cm x 2
 * une batterie / pile / de quoi avoir du courant
@@ -32,3 +32,4 @@
 ### Sources
 * https://youtu.be/09Mpkjcr0bo?si=AsDyuRoitBP0GgXo
 * https://youtu.be/bkqoKWP4Oy4?si=CPyFFZjHUmcJd_Ae
+* tuto code : https://howtomechatronics.com/tutorials/arduino/stepper-motors-and-arduino-the-ultimate-guide/ 
