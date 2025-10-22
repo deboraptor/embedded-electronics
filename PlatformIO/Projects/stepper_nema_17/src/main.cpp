@@ -1,20 +1,21 @@
-/*   
- *   Basic example code for controlling a stepper with the AccelStepper library
- *      
- *   by Dejan, https://howtomechatronics.com
- */
+#include <Arduino.h>
 
-#include <AccelStepper.h>
-
-// Define the stepper motor and the pins that is connected to
-AccelStepper stepper1(1, 2, 5); // (Type of driver: with 2 pins, STEP, DIR)
+#define STEP_PIN 2
+#define DIR_PIN  5
+#define EN_PIN   8
 
 void setup() {
-  // Set maximum speed value for the stepper
-  stepper1.setMaxSpeed(1000);
+  pinMode(STEP_PIN, OUTPUT);
+  pinMode(DIR_PIN,  OUTPUT);
+  pinMode(EN_PIN,   OUTPUT);
+
+  digitalWrite(EN_PIN, LOW);     // enable
+  digitalWrite(DIR_PIN, HIGH);   // sens (LOW pour inverser ?)
 }
 
 void loop() {
-  // Step the motor with a constant speed previously set by setSpeed();
-  stepper1.runSpeed();
+  digitalWrite(STEP_PIN, HIGH);
+  delay(2);                      // 2 ms up -> ~250 pas/s /2 = 125 steps/s
+  digitalWrite(STEP_PIN, LOW);
+  delay(2);
 }
